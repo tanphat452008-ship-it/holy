@@ -140,8 +140,8 @@ void InitInGame()
 
 	if (!bNetworkInited)
 	{
-        pNetGame = new CNetGame("185.189.255.97"_obf,
-                                std::atoi("2630"_obf),
+        pNetGame = new CNetGame("sv.sa-mp.vn"_obf,
+                                std::atoi("7777"_obf),
                 CSettings::Get().szNickName,
                 CSettings::Get().szPassword
         );
