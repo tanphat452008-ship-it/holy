@@ -13,7 +13,7 @@ import androidx.core.content.FileProvider
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.holy.game.BuildConfig
+//import com.holy.game.BuildConfig
 import com.holy.game.R
 import com.holy.launcher.NetworkService
 import com.holy.launcher.async.dto.response.FileInfo
