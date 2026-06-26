@@ -1,4 +1,4 @@
-name: Build APK (Ultra Stable Fix)
+name: Build APK (Final Stable No-Proxy Fix)
 
 on:
   push:
@@ -20,7 +20,34 @@ jobs:
         uses: actions/checkout@v4
 
       # =========================
-      # 2. Java 17 + Gradle cache
+      # 2. Clean ALL proxy / env injection (FIX 127.0.0.1:12334)
+      # =========================
+      - name: Remove proxy + env injection (CRITICAL FIX)
+        shell: bash
+        run: |
+          unset HTTP_PROXY
+          unset HTTPS_PROXY
+          unset http_proxy
+          unset https_proxy
+          unset JAVA_TOOL_OPTIONS
+          unset GRADLE_OPTS
+
+      # =========================
+      # 3. Force Gradle properties NO PROXY
+      # =========================
+      - name: Force Gradle no proxy
+        shell: bash
+        run: |
+          mkdir -p ~/.gradle
+          cat <<EOF > ~/.gradle/gradle.properties
+systemProp.http.proxyHost=
+systemProp.http.proxyPort=
+systemProp.https.proxyHost=
+systemProp.https.proxyPort=
+EOF
+
+      # =========================
+      # 4. Setup JDK 17 (clean)
       # =========================
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -30,16 +57,7 @@ jobs:
           cache: gradle
 
       # =========================
-      # 3. HARD FIX: Gradle (NO WRAPPER DOWNLOAD)
-      # =========================
-      - name: Setup Gradle (force stable)
-        uses: gradle/gradle-build-action@v3
-        with:
-          gradle-version: 8.13
-          cache-disabled: false
-
-      # =========================
-      # 4. Android SDK
+      # 5. Android SDK
       # =========================
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -49,23 +67,23 @@ jobs:
           accept-android-sdk-licenses: true
 
       # =========================
-      # 5. Windows long path fix
+      # 6. ONLY ONE Gradle system (NO wrapper download)
       # =========================
-      - name: Enable long paths
-        shell: powershell
-        run: |
-          git config --system core.longpaths true
-          reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f
+      - name: Setup Gradle (safe mode)
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: 8.6
 
       # =========================
-      # 6. BUILD APK (NO gradlew download)
+      # 7. Build APK (CLEAN PIPELINE)
       # =========================
       - name: Build APK
-        run: |
-          gradle clean assembleDebug
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: clean assembleDebug --no-daemon
 
       # =========================
-      # 7. Rename APK
+      # 8. Rename APK
       # =========================
       - name: Rename APK
         shell: pwsh
@@ -73,7 +91,7 @@ jobs:
           Move-Item app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/app.apk
 
       # =========================
-      # 8. Release APK
+      # 9. Upload Release
       # =========================
       - name: Upload Release
         uses: softprops/action-gh-release@v2
