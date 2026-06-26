@@ -63,13 +63,7 @@ jobs:
         shell: cmd
         run: |
           call gradlew.bat clean assembleDebug --stacktrace || call gradlew.bat assembleDebug --stacktrace
-
-      # 8. Rename APK
-      - name: Rename APK
-        shell: pwsh
-        run: |
-          Move-Item app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/basibacity.apk
-
+          
       # 9. Upload Release
       - name: Upload APK to Release
         uses: softprops/action-gh-release@v2
