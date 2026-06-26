@@ -23,7 +23,6 @@ android {
         }
         ver_test {
             dimension "version"
-            applicationIdSuffix ".test"
             versionNameSuffix "-test"
             manifestPlaceholders = [appName:"HOLY TEST"]
 
