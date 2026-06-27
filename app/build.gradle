@@ -7,45 +7,8 @@ plugins {
 
 android {
     namespace 'com.holy.game'
-
     compileSdk 36
     ndkVersion '28.0.13004108'
-
-    flavorDimensions "version"
-
-    productFlavors {
-        ver_release {
-            dimension "version"
-
-            manifestPlaceholders = [
-                    appName: "HOLY SA"
-            ]
-
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled true
-            }
-
-            externalNativeBuild {
-                cmake {
-                    cppFlags "-fvisibility=hidden"
-                }
-            }
-        }
-
-        ver_test {
-            dimension "version"
-
-            versionNameSuffix "-test"
-
-            manifestPlaceholders = [
-                    appName: "HOLY TEST"
-            ]
-
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled false
-            }
-        }
-    }
 
     defaultConfig {
         applicationId "com.holy.game"
@@ -56,8 +19,12 @@ android {
 
         multiDexEnabled true
 
+        manifestPlaceholders = [
+                appName: "HOLY SA"
+        ]
+
         ndk {
-            abiFilters "arm64-v8a", "armeabi-v7a"
+            abiFilters "armeabi-v7a", "arm64-v8a"
         }
     }
 
@@ -77,15 +44,29 @@ android {
             jniDebuggable false
             renderscriptDebuggable false
 
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled false
+            }
+
             externalNativeBuild {
                 cmake {
-                    cppFlags "-g"
+                    cppFlags "-g -fvisibility=hidden"
                 }
             }
         }
 
         release {
             signingConfig signingConfigs.debug
+
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+            }
+
+            externalNativeBuild {
+                cmake {
+                    cppFlags "-fvisibility=hidden"
+                }
+            }
         }
     }
 
@@ -155,7 +136,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
-
     implementation 'org.apache.commons:commons-lang3:3.0'
 
     implementation 'com.github.skydoves:colorpickerview:2.2.4'
