@@ -39,4 +39,5 @@ void CModelInfoAccelerator::InjectHooks() {
     CHook::Write(base + 0x0A, &m_FileName);
     CHook::Write(base + 0x1E, &m_bHasRun);
     CHook::Write(base + 0x1F, &m_bFileFound);
-*/}
+    }
+*/
