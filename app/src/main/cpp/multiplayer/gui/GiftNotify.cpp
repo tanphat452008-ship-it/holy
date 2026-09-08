@@ -13,7 +13,7 @@
 //        return;
 //
 //    if(!m_pGiftBoxTex) {
-//        m_pGiftBoxTex = CUtil::LoadTextureFromDB("gui", "gift_box");
+        m_pGiftBoxTex = CUtil::LoadTextureFromDB("gui", "gift_box");
 //    }
 //    ImVec2 windowSize = ImVec2(950, 400);
 //    ImVec2 windowPos = CGUI::GetCenterScreen(windowSize);
