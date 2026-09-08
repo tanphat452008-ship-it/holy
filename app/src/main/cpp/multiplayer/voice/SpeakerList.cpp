@@ -22,8 +22,8 @@ bool SpeakerList::Init() noexcept
 
     try
     {
-        SpeakerList::tSpeakerIcon = CUtil::LoadTextureFromDB("gui", "speaker_icon");
-    }
+        SpeakerList::tSpeakerIcon = (RwTexture*)CUtil::LoadTextureFromDB("samp", "speaker");
+	}
     catch (const std::exception& exception)
     {
         Log("[sv:err:speakerlist:init] : failed to create speaker icon");
